@@ -9,10 +9,10 @@ namespace Intelecom.DirectPayment.Client
     public interface IDirectPaymentClient
     {
         /// <summary>
-        /// Performs a payment.
+        /// Used to directly charge a mobile subscription with a provided amount.
         /// </summary>
         /// <param name="request">Payment request.</param>
-        /// <returns>Payment response.</returns>
+        /// <returns>The payment response.</returns>
         Task<PaymentResponse> PayAsync(PaymentRequest request);
     }
 }

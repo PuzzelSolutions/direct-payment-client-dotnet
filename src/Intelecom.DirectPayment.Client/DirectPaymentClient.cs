@@ -64,10 +64,10 @@ namespace Intelecom.DirectPayment.Client
         }
 
         /// <summary>
-        /// Performs a payment.
+        /// Used to directly charge a mobile subscription with a provided amount.
         /// </summary>
         /// <param name="request">Payment request.</param>
-        /// <returns>Payment response.</returns>
+        /// <returns>The payment response.</returns>
         public async Task<PaymentResponse> PayAsync(PaymentRequest request)
         {
             var content = request.CreateStringContent(_serializerSettings);
