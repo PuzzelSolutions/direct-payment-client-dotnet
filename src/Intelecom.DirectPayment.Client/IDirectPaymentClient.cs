@@ -14,5 +14,14 @@ namespace Intelecom.DirectPayment.Client
         /// <param name="request">Payment request.</param>
         /// <returns>The payment response.</returns>
         Task<PaymentResponse> PayAsync(PaymentRequest request);
+
+        /// <summary>
+        /// Used to cancel a payment already made.
+        /// The transaction as a whole is then credited the mobile phone subscription.
+        /// It is not possible to reverse only part of a payment.
+        /// </summary>
+        /// <param name="details">Details about the transaction.</param>
+        /// <returns>The reverse payment response.</returns>
+        Task<ReversePaymentDetails> ReversePaymentAsync(ReversePaymentDetails details);
     }
 }

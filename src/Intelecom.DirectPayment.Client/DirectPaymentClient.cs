@@ -83,6 +83,21 @@ namespace Intelecom.DirectPayment.Client
         }
 
         /// <summary>
+        /// Used to cancel a payment already made.
+        /// The transaction as a whole is then credited the mobile phone subscription.
+        /// It is not possible to reverse only part of a payment.
+        /// </summary>
+        /// <param name="details">Details about the transaction.</param>
+        /// <returns>The reverse payment response.</returns>
+        public async Task<ReversePaymentDetails> ReversePaymentAsync(ReversePaymentDetails details)
+        {
+            var responseMessage = await _client.DeleteAsync($"{RelativeUri.Pay}/{details.TransactionId}");
+            await CheckIfFailedRequestAsync(responseMessage);
+
+            return await responseMessage.DeserializeAsAsync<ReversePaymentDetails>();
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>

@@ -120,5 +120,70 @@ namespace Intelecom.DirectPayment.Client.Tests
                 }
             }
         }
+
+        public class ReversePaymentAsync : DirectPaymentClientTests
+        {
+            [Test]
+            public async Task WhenRequestSucceeds_ShouldReturnReversePaymentResponse()
+            {
+                Func<ReversePaymentDetails> responseFunc = () => new ReversePaymentDetails(_randomInteger);
+                var client = CreateValidClient(HttpStatusCode.OK, responseFunc);
+
+                try
+                {
+                    var response = await client.ReversePaymentAsync(new ReversePaymentDetails(_randomInteger));
+                    response.TransactionId.ShouldEqual(_randomInteger);
+                }
+                catch (Exception e)
+                {
+                    Assert.Fail(e.Message);
+                }
+            }
+
+            [Test]
+            public async Task WhenRequestFailsWithFault_ShouldThrowDirectPaymentExceptionContainingFault()
+            {
+                Func<DirectPaymentFault> responseFunc = () => new DirectPaymentFault { Code = _randomInteger, Description = _guid };
+                var client = CreateValidClient(HttpStatusCode.Forbidden, responseFunc);
+
+                try
+                {
+                    await client.ReversePaymentAsync(new ReversePaymentDetails(_randomInteger));
+                    Assert.Fail();
+                }
+                catch (DirectPaymentException e)
+                {
+                    e.Fault.Code.ShouldEqual(_randomInteger);
+                    e.Fault.Description.ShouldEqual(_guid);
+                    e.InnerException.ShouldBeNull();
+                }
+                catch (Exception e)
+                {
+                    Assert.Fail(e.Message);
+                }
+            }
+
+            [Test]
+            public async Task WhenRequestFailsWithoutFault_ShouldThrowDirectPaymentExceptionWithInnerException()
+            {
+                Func<DirectPaymentFault> responseFunc = () => null;
+                var client = CreateValidClient(HttpStatusCode.InternalServerError, responseFunc);
+
+                try
+                {
+                    await client.ReversePaymentAsync(new ReversePaymentDetails(_randomInteger));
+                    Assert.Fail();
+                }
+                catch (DirectPaymentException e)
+                {
+                    e.Fault.ShouldBeNull();
+                    e.InnerException.ShouldNotBeNull();
+                }
+                catch (Exception e)
+                {
+                    Assert.Fail(e.Message);
+                }
+            }
+        }
     }
 }
