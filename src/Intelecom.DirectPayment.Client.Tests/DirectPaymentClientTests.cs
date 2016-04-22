@@ -15,7 +15,7 @@ namespace Intelecom.DirectPayment.Client.Tests
         private readonly DirectPaymentCredentials _validDummyCredentials = new DirectPaymentCredentials(1, "username", "password");
         private readonly string _guid = Guid.NewGuid().ToString();
         private readonly int _randomInteger = new Random().Next(100, int.MaxValue);
-        private const string DummyUri = "https://dummy.uri";
+        private const string DummyUri = "https://dummy.uri/service";
         private const string DummyMsisdn = "+4712345678";
 
         private DirectPaymentClient CreateValidClient(HttpStatusCode statusCode, Func<object> responseFunc)

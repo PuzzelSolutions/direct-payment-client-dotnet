@@ -15,7 +15,7 @@ namespace Intelecom.DirectPayment.Client
     /// </summary>
     public class DirectPaymentClient : IDirectPaymentClient, IDisposable
     {
-        private const string BaseUri = "https://directpayment.intele.com/restV1.svc/service/";
+        private const string BaseUri = "https://directpayment.intele.com/restV1.svc/service";
         private readonly HttpClient _client;
         private readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
         {
@@ -56,9 +56,14 @@ namespace Intelecom.DirectPayment.Client
                 throw new ArgumentNullException(nameof(handler));
             }
 
+            if (baseUri.EndsWith("/"))
+            {
+                baseUri = baseUri.Substring(0, baseUri.Length - 1);
+            }
+
             _client = new HttpClient(handler)
             {
-                BaseAddress = new Uri(baseUri + credentials.ServiceId),
+                BaseAddress = new Uri($"{baseUri}/{credentials.ServiceId}/"),
                 DefaultRequestHeaders = { Authorization = new AuthenticationHeaderValue("Basic", credentials.ToBasicAuthBase64String()) }
             };
         }
