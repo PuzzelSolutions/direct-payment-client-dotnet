@@ -91,9 +91,9 @@ namespace Intelecom.DirectPayment.Client.Tests
                     e.Fault.Description.ShouldEqual(_guid);
                     e.InnerException.ShouldBeNull();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    Assert.Fail();
+                    Assert.Fail(e.Message);
                 }
             }
 
@@ -114,9 +114,9 @@ namespace Intelecom.DirectPayment.Client.Tests
                     e.Fault.ShouldBeNull();
                     e.InnerException.ShouldNotBeNull();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    Assert.Fail();
+                    Assert.Fail(e.Message);
                 }
             }
         }
