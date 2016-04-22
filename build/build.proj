@@ -6,6 +6,7 @@
     <ProjectName>Intelecom.DirectPayment.Client</ProjectName>
     <ArtifactsDir>..\artifacts\</ArtifactsDir>
     <SourceDir>..\src\</SourceDir>
+    <PackagesDir>$(SourceDir)packages\</PackagesDir>
     <NuGetExe>..\tools\nuget\nuget.exe</NuGetExe>
     <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
     <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
@@ -34,6 +35,11 @@
     <MSBuild Targets="Rebuild"
              Projects="$(SourceDir)$(ProjectName).sln"
              Properties="Configuration=$(Configuration) "/>
+  </Target>
+
+  <Target Name="TestAndCoverage"
+         DependsOnTargets="Build">
+    <Exec Command='$(PackagesDir)OpenCover.4.6.519\tools\OpenCover.Console.exe -target:"$(PackagesDir)NUnit.ConsoleRunner.3.2.1\tools\nunit3-console.exe" -targetargs:"$(SourceDir)$(ProjectName).Tests\$(ProjectName).Tests.csproj --config=$(Configuration)" -output:$(ArtifactsDir)opencover.xml -register:user -filter:"+[$(ProjectName)*]* -[$(ProjectName).Tests*]*"' />
   </Target>
 
   <Target Name="CreateNuGetPackage"

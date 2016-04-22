@@ -7,6 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intelecom.DirectPayment.Cli
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{32AE62B6-2F8C-4D5C-988F-9587D7E99902}"
 	ProjectSection(SolutionItems) = preProject
+		..\appveyor.yml = ..\appveyor.yml
 		..\build\build.proj = ..\build\build.proj
 		Intelecom.DirectPayment.Client\Intelecom.DirectPayment.Client.nuspec = Intelecom.DirectPayment.Client\Intelecom.DirectPayment.Client.nuspec
 		Intelecom.DirectPayment.Client\version.txt = Intelecom.DirectPayment.Client\version.txt

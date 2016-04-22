@@ -4,7 +4,12 @@ pull_requests:
 nuget:
   project_feed: true
 build_script:
-- cmd: msbuild build\build.proj /t:CreateNuGetPackage
+- cmd: msbuild build\build.proj /t:TestAndCoverage;CreateNuGetPackage
 artifacts:
 - path: artifacts\nuget\*.nupkg
-  name: NuGet packagedeploy: off
+  name: NuGet package
+after_test: 
+- "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+- pip install codecov
+- codecov -f "artifacts\opencover.xml"
+deploy: off
