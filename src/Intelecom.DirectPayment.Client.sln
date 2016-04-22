@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intelecom.DirectPayment.Client", "Intelecom.DirectPayment.Client\Intelecom.DirectPayment.Client.csproj", "{5DBC7323-48EC-42BA-BAEA-A5BD80A5AC6E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{32AE62B6-2F8C-4D5C-988F-9587D7E99902}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\build.proj = ..\build\build.proj
+		Intelecom.DirectPayment.Client\Intelecom.DirectPayment.Client.nuspec = Intelecom.DirectPayment.Client\Intelecom.DirectPayment.Client.nuspec
+		Intelecom.DirectPayment.Client\version.txt = Intelecom.DirectPayment.Client\version.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intelecom.DirectPayment.Client.Tests", "Intelecom.DirectPayment.Client.Tests\Intelecom.DirectPayment.Client.Tests.csproj", "{02B1418F-9FE6-4DFF-804B-C5ED4CB9D7EE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5DBC7323-48EC-42BA-BAEA-A5BD80A5AC6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DBC7323-48EC-42BA-BAEA-A5BD80A5AC6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DBC7323-48EC-42BA-BAEA-A5BD80A5AC6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DBC7323-48EC-42BA-BAEA-A5BD80A5AC6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02B1418F-9FE6-4DFF-804B-C5ED4CB9D7EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02B1418F-9FE6-4DFF-804B-C5ED4CB9D7EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02B1418F-9FE6-4DFF-804B-C5ED4CB9D7EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02B1418F-9FE6-4DFF-804B-C5ED4CB9D7EE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
