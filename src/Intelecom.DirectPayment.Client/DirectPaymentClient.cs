@@ -91,7 +91,7 @@ namespace Intelecom.DirectPayment.Client
         /// <returns>The reverse payment response.</returns>
         public async Task<ReversePaymentDetails> ReversePaymentAsync(ReversePaymentDetails details)
         {
-            var responseMessage = await _client.DeleteAsync($"{RelativeUri.Pay}/{details.TransactionId}");
+            var responseMessage = await _client.DeleteAsync($"{RelativeUri.Pay}/{details.TransactionId}").ConfigureAwait(false);
             await CheckIfFailedRequestAsync(responseMessage);
 
             return await responseMessage.DeserializeAsAsync<ReversePaymentDetails>();
