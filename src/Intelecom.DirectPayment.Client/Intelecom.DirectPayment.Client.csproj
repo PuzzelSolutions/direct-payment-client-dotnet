@@ -57,6 +57,9 @@
     <Compile Include="Models\PaymentDetails.cs" />
     <Compile Include="Models\PaymentRequest.cs" />
     <Compile Include="Models\PaymentResponse.cs" />
+    <Compile Include="Models\PaymentStatus.cs" />
+    <Compile Include="Models\PaymentStatusRequest.cs" />
+    <Compile Include="Models\PaymentStatusResponse.cs" />
     <Compile Include="Models\ReversePaymentDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

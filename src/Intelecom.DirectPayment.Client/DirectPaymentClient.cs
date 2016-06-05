@@ -110,6 +110,26 @@ namespace Intelecom.DirectPayment.Client
         }
 
         /// <summary>
+        /// Gets the payment status of a specific transaction.
+        /// It can be useful in cases where something goes wrong in the payment or
+        /// reverse payment flow and your client is unsure of the outcome of the operation.
+        /// </summary>
+        /// <param name="request">Payment status request.</param>
+        /// <returns>The payment status response.</returns>
+        public async Task<PaymentStatusResponse> GetPaymentStatusAsync(PaymentStatusRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var responseMessage = await _client.GetAsync($"{RelativeUri.Pay}/{request.ClientReference}").ConfigureAwait(false);
+            await CheckIfFailedRequestAsync(responseMessage);
+
+            return await responseMessage.DeserializeAsAsync<PaymentStatusResponse>();
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
@@ -131,6 +151,7 @@ namespace Intelecom.DirectPayment.Client
             }
         }
 
+        // TODO: Accept error message
         private static async Task CheckIfFailedRequestAsync(HttpResponseMessage responseMessage)
         {
             if (!responseMessage.IsSuccessStatusCode)

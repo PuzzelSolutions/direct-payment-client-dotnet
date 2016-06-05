@@ -23,5 +23,14 @@ namespace Intelecom.DirectPayment.Client
         /// <param name="details">Details about the transaction.</param>
         /// <returns>The reverse payment response.</returns>
         Task<ReversePaymentDetails> ReversePaymentAsync(ReversePaymentDetails details);
+
+        /// <summary>
+        /// Gets the payment status of a specific transaction.
+        /// It can be useful in cases where something goes wrong in the payment or
+        /// reverse payment flow and your client is unsure of the outcome of the operation.
+        /// </summary>
+        /// <param name="request">Payment status request.</param>
+        /// <returns>The payment status response.</returns>
+        Task<PaymentStatusResponse> GetPaymentStatusAsync(PaymentStatusRequest request);
     }
 }

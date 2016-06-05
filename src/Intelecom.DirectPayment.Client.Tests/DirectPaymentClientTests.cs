@@ -199,5 +199,83 @@ namespace Intelecom.DirectPayment.Client.Tests
                 }
             }
         }
+
+        public class GetPaymentStatusAsync : DirectPaymentClientTests
+        {
+            [Test]
+            public async Task WhenRequestIsNull_ShouldThrowArgumentNullException()
+            {
+                var client = CreateValidClient(HttpStatusCode.OK, message => null);
+
+                try
+                {
+                    await client.GetPaymentStatusAsync(null);
+                    Assert.Fail();
+                }
+                catch (ArgumentNullException)
+                {
+                }
+                catch (Exception e)
+                {
+                    Assert.Fail(e.Message);
+                }
+            }
+
+            [Test]
+            public async Task WhenValidRequest_ShouldReturnStatusResponse()
+            {
+                var client = CreateValidClient(HttpStatusCode.OK, message => new PaymentStatusResponse { ClientReference = _guid, PaymentStatus = PaymentStatus.Paid });
+
+                var response = await client.GetPaymentStatusAsync(new PaymentStatusRequest(_guid));
+
+                response.ClientReference.ShouldEqual(_guid);
+                response.PaymentStatus.ShouldEqual(PaymentStatus.Paid);
+            }
+
+            [Test]
+            public async Task WhenRequestFailsWithFault_ShouldThrowDirectPaymentExceptionContainingFault()
+            {
+                Func<HttpRequestMessage, DirectPaymentFault> responseFunc = requestMessage => new DirectPaymentFault { Code = _randomInteger, Description = _guid };
+                var client = CreateValidClient(HttpStatusCode.NotFound, responseFunc);
+
+                try
+                {
+                    await client.GetPaymentStatusAsync(new PaymentStatusRequest(_guid));
+                    Assert.Fail();
+                }
+                catch (DirectPaymentException e)
+                {
+                    e.Fault.Code.ShouldEqual(_randomInteger);
+                    e.Fault.Description.ShouldEqual(_guid);
+                    e.InnerException.ShouldBeNull();
+                }
+                catch (Exception e)
+                {
+                    Assert.Fail(e.Message);
+                }
+            }
+
+            [Test]
+            public async Task WhenRequestFailsWithoutFault_ShouldThrowDirectPaymentExceptionWithInnerException()
+            {
+                Func<HttpRequestMessage, DirectPaymentFault> responseFunc = requestMessage => null;
+                var client = CreateValidClient(HttpStatusCode.InternalServerError, responseFunc);
+
+                try
+                {
+                    await client.GetPaymentStatusAsync(new PaymentStatusRequest(_guid));
+                    Assert.Fail();
+                }
+                catch (DirectPaymentException e)
+                {
+                    e.Fault.ShouldBeNull();
+                    e.InnerException.ShouldNotBeNull();
+                }
+                catch (Exception e)
+                {
+                    Assert.Fail(e.Message);
+                }
+            }
+        }
     }
 }
