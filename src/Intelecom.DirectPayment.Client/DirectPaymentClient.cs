@@ -72,9 +72,15 @@ namespace Intelecom.DirectPayment.Client
         /// Used to directly charge a mobile subscription with a provided amount.
         /// </summary>
         /// <param name="request">Payment request.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the <see cref="PaymentRequest"/> is null.</exception>
         /// <returns>The payment response.</returns>
         public async Task<PaymentResponse> PayAsync(PaymentRequest request)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             var content = request.CreateStringContent(_serializerSettings);
             var responseMessage = await _client.PostAsync(RelativeUri.Pay, content).ConfigureAwait(false);
             await CheckIfFailedRequestAsync(responseMessage);
@@ -88,9 +94,15 @@ namespace Intelecom.DirectPayment.Client
         /// It is not possible to reverse only part of a payment.
         /// </summary>
         /// <param name="details">Details about the transaction.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <see cref="ReversePaymentDetails"/> is null.</exception>
         /// <returns>The reverse payment response.</returns>
         public async Task<ReversePaymentDetails> ReversePaymentAsync(ReversePaymentDetails details)
         {
+            if (details == null)
+            {
+                throw new ArgumentNullException(nameof(details));
+            }
+
             var responseMessage = await _client.DeleteAsync($"{RelativeUri.Pay}/{details.TransactionId}").ConfigureAwait(false);
             await CheckIfFailedRequestAsync(responseMessage);
 

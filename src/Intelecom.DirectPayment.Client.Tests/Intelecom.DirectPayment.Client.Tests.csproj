@@ -49,6 +49,10 @@
   <ItemGroup>
     <Compile Include="DirectPaymentClientTests.cs" />
     <Compile Include="Helpers\FakeRequestHandler.cs" />
+    <Compile Include="Models\DirectPaymentCredentialsTests.cs" />
+    <Compile Include="Models\PaymentDetailsTests.cs" />
+    <Compile Include="Models\PaymentRequestTests.cs" />
+    <Compile Include="Models\ReversePaymentDetailsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

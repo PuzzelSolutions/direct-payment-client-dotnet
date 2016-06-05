@@ -11,9 +11,9 @@ namespace Intelecom.DirectPayment.Client.Tests.Helpers
     public class FakeRequestHandler : HttpClientHandler
     {
         private readonly HttpStatusCode _statusCode;
-        private readonly Func<object> _responseFunc;
+        private readonly Func<HttpRequestMessage, object> _responseFunc;
 
-        public FakeRequestHandler(HttpStatusCode statusCode, Func<object> responseFunc)
+        public FakeRequestHandler(HttpStatusCode statusCode, Func<HttpRequestMessage, object> responseFunc)
         {
             if (responseFunc == null)
             {
@@ -26,7 +26,7 @@ namespace Intelecom.DirectPayment.Client.Tests.Helpers
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var response = _responseFunc();
+            var response = _responseFunc(request);
 
             return Task.FromResult(
                 response != null

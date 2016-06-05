@@ -18,7 +18,7 @@ namespace Intelecom.DirectPayment.Client.Tests
         private const string DummyUri = "https://dummy.uri/service";
         private const string DummyMsisdn = "+4712345678";
 
-        private DirectPaymentClient CreateValidClient(HttpStatusCode statusCode, Func<object> responseFunc)
+        private DirectPaymentClient CreateValidClient(HttpStatusCode statusCode, Func<HttpRequestMessage, object> responseFunc)
         {
             if (responseFunc == null)
             {
@@ -52,6 +52,20 @@ namespace Intelecom.DirectPayment.Client.Tests
             {
                 Assert.Throws<ArgumentNullException>(() => new DirectPaymentClient(DummyUri, _validDummyCredentials, null));
             }
+
+            [Test]
+            public async Task WhenPassedBaseUri_ShouldHandleBothWithAndWithoutTrailingSlash()
+            {
+                var expected = new Uri("http://fake.com/1/pay");
+                var handler = new FakeRequestHandler(HttpStatusCode.OK, requestMessage =>
+                                                                        {
+                                                                            requestMessage.RequestUri.ShouldEqual(expected);
+                                                                            return new { };
+                                                                        });
+                var request = new PaymentRequest(new PaymentDetails(DummyMsisdn, _randomInteger, _guid, _guid));
+                await new DirectPaymentClient("http://fake.com", _validDummyCredentials, handler).PayAsync(request);
+                await new DirectPaymentClient("http://fake.com/", _validDummyCredentials, handler).PayAsync(request);
+            }
         }
 
         public class PayAsync : DirectPaymentClientTests
@@ -59,7 +73,7 @@ namespace Intelecom.DirectPayment.Client.Tests
             [Test]
             public async Task WhenRequestSucceeds_ShouldReturnPaymentResponse()
             {
-                Func<PaymentResponse> responseFunc = () => new PaymentResponse
+                Func<HttpRequestMessage, PaymentResponse> responseFunc = requestMessage => new PaymentResponse
                 {
                     ClientReference = _guid,
                     TransactionId = _randomInteger
@@ -76,7 +90,7 @@ namespace Intelecom.DirectPayment.Client.Tests
             [Test]
             public async Task WhenRequestFailsWithFault_ShouldThrowDirectPaymentExceptionContainingFault()
             {
-                Func<DirectPaymentFault> responseFunc = () => new DirectPaymentFault { Code = _randomInteger, Description = _guid };
+                Func<HttpRequestMessage, DirectPaymentFault> responseFunc = requestMessage => new DirectPaymentFault { Code = _randomInteger, Description = _guid };
                 var client = CreateValidClient(HttpStatusCode.BadRequest, responseFunc);
                 var request = new PaymentRequest(new PaymentDetails(DummyMsisdn, _randomInteger, _guid, _guid));
 
@@ -100,7 +114,7 @@ namespace Intelecom.DirectPayment.Client.Tests
             [Test]
             public async Task WhenRequestFailsWithoutFault_ShouldThrowDirectPaymentExceptionWithInnerException()
             {
-                Func<PaymentResponse> responseFunc = () => null;
+                Func<HttpRequestMessage, PaymentResponse> responseFunc = requestMessage => null;
                 var client = CreateValidClient(HttpStatusCode.InternalServerError, responseFunc);
                 var request = new PaymentRequest(new PaymentDetails(DummyMsisdn, _randomInteger, _guid, _guid));
 
@@ -126,7 +140,7 @@ namespace Intelecom.DirectPayment.Client.Tests
             [Test]
             public async Task WhenRequestSucceeds_ShouldReturnReversePaymentResponse()
             {
-                Func<ReversePaymentDetails> responseFunc = () => new ReversePaymentDetails(_randomInteger);
+                Func<HttpRequestMessage, ReversePaymentDetails> responseFunc = requestMessage => new ReversePaymentDetails(_randomInteger);
                 var client = CreateValidClient(HttpStatusCode.OK, responseFunc);
 
                 try
@@ -143,7 +157,7 @@ namespace Intelecom.DirectPayment.Client.Tests
             [Test]
             public async Task WhenRequestFailsWithFault_ShouldThrowDirectPaymentExceptionContainingFault()
             {
-                Func<DirectPaymentFault> responseFunc = () => new DirectPaymentFault { Code = _randomInteger, Description = _guid };
+                Func<HttpRequestMessage, DirectPaymentFault> responseFunc = requestMessage => new DirectPaymentFault { Code = _randomInteger, Description = _guid };
                 var client = CreateValidClient(HttpStatusCode.Forbidden, responseFunc);
 
                 try
@@ -166,7 +180,7 @@ namespace Intelecom.DirectPayment.Client.Tests
             [Test]
             public async Task WhenRequestFailsWithoutFault_ShouldThrowDirectPaymentExceptionWithInnerException()
             {
-                Func<DirectPaymentFault> responseFunc = () => null;
+                Func<HttpRequestMessage, DirectPaymentFault> responseFunc = requestMessage => null;
                 var client = CreateValidClient(HttpStatusCode.InternalServerError, responseFunc);
 
                 try
