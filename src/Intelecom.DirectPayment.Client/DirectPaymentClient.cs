@@ -1,5 +1,4 @@
 ﻿using Intelecom.DirectPayment.Client.Constants;
-using Intelecom.DirectPayment.Client.Exceptions;
 using Intelecom.DirectPayment.Client.Extensions;
 using Intelecom.DirectPayment.Client.Models;
 using Newtonsoft.Json;
@@ -82,10 +81,11 @@ namespace Intelecom.DirectPayment.Client
             }
 
             var content = request.CreateStringContent(_serializerSettings);
-            var responseMessage = await _client.PostAsync(RelativeUri.Pay, content).ConfigureAwait(false);
-            await CheckIfFailedRequestAsync(responseMessage);
 
-            return await responseMessage.DeserializeAsAsync<PaymentResponse>();
+            return await _client.PostAsync(RelativeUri.Pay, content)
+                                .ConfigureAwait(false)
+                                .ThrowIfErrorResponseAsync()
+                                .DeserializeAsync<PaymentResponse>();
         }
 
         /// <summary>
@@ -103,10 +103,10 @@ namespace Intelecom.DirectPayment.Client
                 throw new ArgumentNullException(nameof(details));
             }
 
-            var responseMessage = await _client.DeleteAsync($"{RelativeUri.Pay}/{details.TransactionId}").ConfigureAwait(false);
-            await CheckIfFailedRequestAsync(responseMessage);
-
-            return await responseMessage.DeserializeAsAsync<ReversePaymentDetails>();
+            return await _client.DeleteAsync($"{RelativeUri.Pay}/{details.TransactionId}")
+                                .ConfigureAwait(false)
+                                .ThrowIfErrorResponseAsync()
+                                .DeserializeAsync<ReversePaymentDetails>();
         }
 
         /// <summary>
@@ -123,10 +123,10 @@ namespace Intelecom.DirectPayment.Client
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var responseMessage = await _client.GetAsync($"{RelativeUri.Pay}/{request.ClientReference}").ConfigureAwait(false);
-            await CheckIfFailedRequestAsync(responseMessage);
-
-            return await responseMessage.DeserializeAsAsync<PaymentStatusResponse>();
+            return await _client.GetAsync($"{RelativeUri.Pay}/{request.ClientReference}")
+                                .ConfigureAwait(false)
+                                .ThrowIfErrorResponseAsync()
+                                .DeserializeAsync<PaymentStatusResponse>();
         }
 
         /// <summary>
@@ -148,23 +148,6 @@ namespace Intelecom.DirectPayment.Client
             if (disposing)
             {
                 _client?.Dispose();
-            }
-        }
-
-        // TODO: Accept error message
-        private static async Task CheckIfFailedRequestAsync(HttpResponseMessage responseMessage)
-        {
-            if (!responseMessage.IsSuccessStatusCode)
-            {
-                try
-                {
-                    var fault = await responseMessage.DeserializeAsAsync<DirectPaymentFault>();
-                    throw new DirectPaymentException(fault, "Payment failed", null);
-                }
-                catch (Exception e) when (!(e is DirectPaymentException))
-                {
-                    throw new DirectPaymentException("Payment failed", e);
-                }
             }
         }
     }

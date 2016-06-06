@@ -29,11 +29,24 @@ namespace Intelecom.DirectPayment.Client.Extensions
         /// <typeparam name="T">The type of the object.</typeparam>
         /// <param name="message">The HTTP response message.</param>
         /// <returns>The deserialized JSON converted to the specified type.</returns>
-        public static async Task<T> DeserializeAsAsync<T>(this HttpResponseMessage message)
+        public static async Task<T> DeserializeAsync<T>(this HttpResponseMessage message)
         {
             var responseJson = await message.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<T>(responseJson);
+        }
+
+        /// <summary>
+        /// Deserializes the HTTP content to an object.
+        /// </summary>
+        /// <typeparam name="T">The type of the object.</typeparam>
+        /// <param name="responseMessageTask">The task that returns an HTTP response message.</param>
+        /// <returns>The deserialized JSON converted to the specified type.</returns>
+        public static async Task<T> DeserializeAsync<T>(this Task<HttpResponseMessage> responseMessageTask)
+        {
+            var responseMessage = await responseMessageTask;
+
+            return await DeserializeAsync<T>(responseMessage);
         }
     }
 }

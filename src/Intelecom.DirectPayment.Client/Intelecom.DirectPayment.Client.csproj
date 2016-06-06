@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Constants\RelativeUri.cs" />
     <Compile Include="DirectPaymentClient.cs" />
+    <Compile Include="Extensions\ConfiguredTaskAwaitableExtensions.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="IDirectPaymentClient.cs" />
     <Compile Include="Models\DirectPaymentCredentials.cs" />
