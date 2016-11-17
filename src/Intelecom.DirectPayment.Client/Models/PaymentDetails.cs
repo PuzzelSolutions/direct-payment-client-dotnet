@@ -84,9 +84,12 @@ namespace Intelecom.DirectPayment.Client.Models
         /// </summary>
         public string ServiceCode { get; }
 
+        /// <summary>
+        /// Gets or sets the business model.
+        /// </summary>
+        public string BusinessModel { get; set; }
+
         /// <inheritdoc/>
-        public override string ToString() => $"Age: {Age}, ClientReference: {ClientReference}, Differentiator: {Differentiator}, " +
-                                             $"EndUserInvoiceText: {EndUserInvoiceText}, InvoiceNode: {InvoiceNode}, Msisdn: {Msisdn}, " +
-                                             $"Price: {Price}, ServiceCode: {ServiceCode}";
+        public override string ToString() => $"{nameof(Age)}: {Age}, {nameof(ClientReference)}: {ClientReference}, {nameof(Differentiator)}: {Differentiator}, {nameof(EndUserInvoiceText)}: {EndUserInvoiceText}, {nameof(InvoiceNode)}: {InvoiceNode}, {nameof(Msisdn)}: {Msisdn}, {nameof(Price)}: {Price}, {nameof(ServiceCode)}: {ServiceCode}, {nameof(BusinessModel)}: {BusinessModel}";
     }
 }
