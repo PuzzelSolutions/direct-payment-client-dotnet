@@ -16,12 +16,17 @@
         public PaymentStatus PaymentStatus { get; set; }
 
         /// <summary>
+        /// Gets or sets the transaction ID.
+        /// </summary>
+        public int? TransactionId { get; set; }
+
+        /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>
         /// A string that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override string ToString() => $"ClientReference: {ClientReference}, PaymentStatus: {PaymentStatus}";
+        public override string ToString() => $"ClientReference: {ClientReference}, PaymentStatus: {PaymentStatus}, TransactionId: {TransactionId}";
     }
 }
