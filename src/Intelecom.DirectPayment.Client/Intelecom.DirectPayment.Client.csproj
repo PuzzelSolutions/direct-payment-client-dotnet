@@ -62,6 +62,7 @@
     <Compile Include="Models\PaymentStatusRequest.cs" />
     <Compile Include="Models\PaymentStatusResponse.cs" />
     <Compile Include="Models\ReversePaymentDetails.cs" />
+    <Compile Include="Models\UssdAuthorization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

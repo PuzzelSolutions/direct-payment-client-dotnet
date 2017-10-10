@@ -89,7 +89,13 @@ namespace Intelecom.DirectPayment.Client.Models
         /// </summary>
         public string BusinessModel { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Ussd Authorization flag
+        /// 1=None, 2=Confirmation.
+        /// </summary>
+        public UssdAuthorization? UssdAuthorization { get; set; }
+
         /// <inheritdoc/>
-        public override string ToString() => $"{nameof(Age)}: {Age}, {nameof(ClientReference)}: {ClientReference}, {nameof(Differentiator)}: {Differentiator}, {nameof(EndUserInvoiceText)}: {EndUserInvoiceText}, {nameof(InvoiceNode)}: {InvoiceNode}, {nameof(Msisdn)}: {Msisdn}, {nameof(Price)}: {Price}, {nameof(ServiceCode)}: {ServiceCode}, {nameof(BusinessModel)}: {BusinessModel}";
+        public override string ToString() => $"{nameof(Age)}: {Age}, {nameof(ClientReference)}: {ClientReference}, {nameof(Differentiator)}: {Differentiator}, {nameof(EndUserInvoiceText)}: {EndUserInvoiceText}, {nameof(InvoiceNode)}: {InvoiceNode}, {nameof(Msisdn)}: {Msisdn}, {nameof(Price)}: {Price}, {nameof(ServiceCode)}: {ServiceCode}, {nameof(BusinessModel)}: {BusinessModel}, {nameof(UssdAuthorization)}: {UssdAuthorization}";
     }
 }
