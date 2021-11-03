@@ -13,7 +13,7 @@ namespace Intelecom.DirectPayment.Client.Models
         /// <param name="msisdn">The MSISDN that should be charged. The format should follow the ITU-T E.164 standard with a + prefix.</param>
         /// <param name="price">The amount that should be debited, in lowest monetary unit. Example: 100 (1,- NOK).</param>
         /// <param name="serviceCode">Service code identifying the type of transaction.</param>
-        /// <param name="clientReference">Client reference for the transaction, must be unique.</param>
+        /// <param name="clientReference">Client reference for the transaction.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="msisdn"/>, <paramref name="serviceCode"/> or <paramref name="clientReference"/> is invalid.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="price"/> is invalid.</exception>
         public PaymentDetails(string msisdn, int price, string serviceCode, string clientReference)
@@ -95,7 +95,12 @@ namespace Intelecom.DirectPayment.Client.Models
         /// </summary>
         public UssdAuthorization? UssdAuthorization { get; set; }
 
+        /// <summary>
+        /// Gets or sets the number of attempt for the same transaction in case of a retry
+        /// </summary>
+        public int Attempt { get; set; } = 1;
+
         /// <inheritdoc/>
-        public override string ToString() => $"{nameof(Age)}: {Age}, {nameof(ClientReference)}: {ClientReference}, {nameof(Differentiator)}: {Differentiator}, {nameof(EndUserInvoiceText)}: {EndUserInvoiceText}, {nameof(InvoiceNode)}: {InvoiceNode}, {nameof(Msisdn)}: {Msisdn}, {nameof(Price)}: {Price}, {nameof(ServiceCode)}: {ServiceCode}, {nameof(BusinessModel)}: {BusinessModel}, {nameof(UssdAuthorization)}: {UssdAuthorization}";
+        public override string ToString() => $"{nameof(Age)}: {Age}, {nameof(ClientReference)}: {ClientReference}, {nameof(Differentiator)}: {Differentiator}, {nameof(EndUserInvoiceText)}: {EndUserInvoiceText}, {nameof(InvoiceNode)}: {InvoiceNode}, {nameof(Msisdn)}: {Msisdn}, {nameof(Price)}: {Price}, {nameof(ServiceCode)}: {ServiceCode}, {nameof(BusinessModel)}: {BusinessModel}, {nameof(UssdAuthorization)}: {UssdAuthorization}, {nameof(Attempt)}: {Attempt}";
     }
 }
